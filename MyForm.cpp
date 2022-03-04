@@ -1,4 +1,5 @@
 #include "MyForm.h"
+
 using namespace System;
 using namespace System::Windows::Forms;
 
@@ -36,5 +37,37 @@ System::Void Lab1::MyForm::ZeroSideButton_Click(System::Object^ sender, System::
 {
     CrossSideButton->FlatAppearance->BorderColor = Color().Firebrick;
     ZeroSideButton->FlatAppearance->BorderColor = Color().YellowGreen;
+}
+
+System::Void Lab1::MyForm::TopLabel_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+{
+    int xOffset;
+    int yOffset;
+
+    if (e->Button == System::Windows::Forms::MouseButtons::Left)
+    {
+        xOffset = -e->X - System::Windows::Forms::SystemInformation::FrameBorderSize.Width;
+        yOffset = -e->Y - System::Windows::Forms::SystemInformation::FrameBorderSize.Height;
+        mouseOffset = Point(xOffset, yOffset);
+        isMouseDown = true;
+    }
+}
+
+System::Void Lab1::MyForm::TopLabel_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+{
+    if (isMouseDown)
+    {
+        Point mousePos = System::Windows::Forms::Control::MousePosition;
+        mousePos.Offset(mouseOffset.X, mouseOffset.Y);
+        Location = mousePos;
+    }
+}
+
+System::Void Lab1::MyForm::TopLabel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+{
+    if (e->Button == System::Windows::Forms::MouseButtons::Left)
+    {
+        isMouseDown = false;
+    }
 }
 

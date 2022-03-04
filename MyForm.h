@@ -14,6 +14,8 @@ namespace Lab1 {
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
+	private:Point mouseOffset;
+	private:bool isMouseDown = false;
 	public:
 		MyForm(void)
 		{
@@ -120,7 +122,7 @@ namespace Lab1 {
 			this->TopPanel->Controls->Add(this->ZeroSideButton);
 			this->TopPanel->Controls->Add(this->CrossSideButton);
 			this->TopPanel->Controls->Add(this->SideInfoLabel);
-			this->TopPanel->Location = System::Drawing::Point(12, 46);
+			this->TopPanel->Location = System::Drawing::Point(13, 46);
 			this->TopPanel->Name = L"TopPanel";
 			this->TopPanel->Size = System::Drawing::Size(312, 53);
 			this->TopPanel->TabIndex = 0;
@@ -199,10 +201,13 @@ namespace Lab1 {
 			this->TopLabel->ForeColor = System::Drawing::SystemColors::Control;
 			this->TopLabel->Location = System::Drawing::Point(0, 0);
 			this->TopLabel->Name = L"TopLabel";
-			this->TopLabel->Size = System::Drawing::Size(335, 28);
+			this->TopLabel->Size = System::Drawing::Size(336, 28);
 			this->TopLabel->TabIndex = 0;
 			this->TopLabel->Text = L"Крестики-нолики";
 			this->TopLabel->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->TopLabel->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::TopLabel_MouseDown);
+			this->TopLabel->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::TopLabel_MouseMove);
+			this->TopLabel->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::TopLabel_MouseUp);
 			// 
 			// GamePanel
 			// 
@@ -216,7 +221,7 @@ namespace Lab1 {
 			this->GamePanel->Controls->Add(this->field2);
 			this->GamePanel->Controls->Add(this->field1);
 			this->GamePanel->Enabled = false;
-			this->GamePanel->Location = System::Drawing::Point(12, 115);
+			this->GamePanel->Location = System::Drawing::Point(13, 115);
 			this->GamePanel->Name = L"GamePanel";
 			this->GamePanel->Size = System::Drawing::Size(312, 314);
 			this->GamePanel->TabIndex = 1;
@@ -375,7 +380,7 @@ namespace Lab1 {
 			this->HeaderPanel->Dock = System::Windows::Forms::DockStyle::Top;
 			this->HeaderPanel->Location = System::Drawing::Point(0, 0);
 			this->HeaderPanel->Name = L"HeaderPanel";
-			this->HeaderPanel->Size = System::Drawing::Size(335, 28);
+			this->HeaderPanel->Size = System::Drawing::Size(336, 28);
 			this->HeaderPanel->TabIndex = 2;
 			// 
 			// IconImage
@@ -396,7 +401,7 @@ namespace Lab1 {
 			this->ExitButton->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Transparent;
 			this->ExitButton->FlatAppearance->MouseOverBackColor = System::Drawing::Color::Transparent;
 			this->ExitButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->ExitButton->Location = System::Drawing::Point(308, 2);
+			this->ExitButton->Location = System::Drawing::Point(309, 2);
 			this->ExitButton->Name = L"ExitButton";
 			this->ExitButton->Size = System::Drawing::Size(24, 24);
 			this->ExitButton->TabIndex = 0;
@@ -411,7 +416,7 @@ namespace Lab1 {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::None;
 			this->BackColor = System::Drawing::SystemColors::WindowFrame;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
-			this->ClientSize = System::Drawing::Size(335, 441);
+			this->ClientSize = System::Drawing::Size(336, 442);
 			this->Controls->Add(this->TopPanel);
 			this->Controls->Add(this->HeaderPanel);
 			this->Controls->Add(this->GamePanel);
@@ -441,5 +446,8 @@ namespace Lab1 {
 		private: System::Void ExitButton_MouseLeave(System::Object^ sender, System::EventArgs^ e);
 		private: System::Void CrossSideButton_Click(System::Object^ sender, System::EventArgs^ e);
 		private: System::Void ZeroSideButton_Click(System::Object^ sender, System::EventArgs^ e);
-	};
+		private: System::Void TopLabel_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+		private: System::Void TopLabel_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+		private: System::Void TopLabel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+};
 }
