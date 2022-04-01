@@ -1,4 +1,5 @@
 #pragma once
+#include "MiniMax.h"
 
 namespace Lab1 {
 
@@ -9,80 +10,66 @@ namespace Lab1 {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	/// <summary>
-	/// Сводка для MyForm
-	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
-	private:Point mouseOffset;
-	private:bool isMouseDown = false;
+	private:
+		MiniMax* ptrMiniMax;
+		Point mouseOffset;
+		bool isMouseDown = false;
+		bool GameIsPlaying = false;
+
+	private: System::Windows::Forms::ImageList^ sprites;
+	private: System::Windows::Forms::Panel^ SidePanel;
+	private: System::Windows::Forms::Label^ label1;
+	private: System::Windows::Forms::PictureBox^ ChosenSide;
+	private: System::Windows::Forms::Panel^ resultPanel;
+	private: System::Windows::Forms::Label^ defeatlabel;
+	private: System::Windows::Forms::Label^ victoryLabel;
+	private: System::Windows::Forms::Label^ drawLabel;
+
+
+	private: System::Windows::Forms::ImageList^ icons;
+
 	public:
 		MyForm(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: добавьте код конструктора
-			//
+			ptrMiniMax = new MiniMax;
 		}
 
 	protected:
-		/// <summary>
-		/// Освободить все используемые ресурсы.
-		/// </summary>
 		~MyForm()
 		{
 			if (components)
 			{
+				ptrMiniMax->~MiniMax();
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Panel^ TopPanel;
-	protected:
-
-	private: System::Windows::Forms::Label^ TopLabel;
-	private: System::Windows::Forms::Panel^ GamePanel;
-	protected:
-
-
-	private: System::Windows::Forms::Button^ field9;
 
 	private: System::Windows::Forms::Button^ field8;
-
 	private: System::Windows::Forms::Button^ field7;
-
 	private: System::Windows::Forms::Button^ field6;
-
 	private: System::Windows::Forms::Button^ field5;
-
 	private: System::Windows::Forms::Button^ field4;
-
 	private: System::Windows::Forms::Button^ field3;
-
 	private: System::Windows::Forms::Button^ field2;
-
 	private: System::Windows::Forms::Button^ field1;
+	private: System::Windows::Forms::Button^ field0;
+
+
+	private: System::Windows::Forms::Panel^ TopPanel;
+	private: System::Windows::Forms::Label^ TopLabel;
+	private: System::Windows::Forms::Panel^ GamePanel;
 	private: System::Windows::Forms::Panel^ HeaderPanel;
 	private: System::Windows::Forms::Button^ ExitButton;
 	private: System::Windows::Forms::Label^ IconImage;
-
-
 	private: System::Windows::Forms::Label^ SideInfoLabel;
 	private: System::Windows::Forms::Button^ StartRestartButton;
 	private: System::Windows::Forms::Button^ ZeroSideButton;
 	private: System::Windows::Forms::Button^ CrossSideButton;
 
-
-
 	private: System::ComponentModel::IContainer^ components;
-
-
-	protected:
-
-	private:
-		/// <summary>
-		/// Обязательная переменная конструктора.
-		/// </summary>
-
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -91,15 +78,18 @@ namespace Lab1 {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
 			this->TopPanel = (gcnew System::Windows::Forms::Panel());
-			this->StartRestartButton = (gcnew System::Windows::Forms::Button());
+			this->SidePanel = (gcnew System::Windows::Forms::Panel());
+			this->SideInfoLabel = (gcnew System::Windows::Forms::Label());
 			this->ZeroSideButton = (gcnew System::Windows::Forms::Button());
 			this->CrossSideButton = (gcnew System::Windows::Forms::Button());
-			this->SideInfoLabel = (gcnew System::Windows::Forms::Label());
+			this->StartRestartButton = (gcnew System::Windows::Forms::Button());
+			this->ChosenSide = (gcnew System::Windows::Forms::PictureBox());
+			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->TopLabel = (gcnew System::Windows::Forms::Label());
 			this->GamePanel = (gcnew System::Windows::Forms::Panel());
-			this->field9 = (gcnew System::Windows::Forms::Button());
 			this->field8 = (gcnew System::Windows::Forms::Button());
 			this->field7 = (gcnew System::Windows::Forms::Button());
 			this->field6 = (gcnew System::Windows::Forms::Button());
@@ -108,40 +98,54 @@ namespace Lab1 {
 			this->field3 = (gcnew System::Windows::Forms::Button());
 			this->field2 = (gcnew System::Windows::Forms::Button());
 			this->field1 = (gcnew System::Windows::Forms::Button());
+			this->field0 = (gcnew System::Windows::Forms::Button());
 			this->HeaderPanel = (gcnew System::Windows::Forms::Panel());
 			this->IconImage = (gcnew System::Windows::Forms::Label());
 			this->ExitButton = (gcnew System::Windows::Forms::Button());
+			this->sprites = (gcnew System::Windows::Forms::ImageList(this->components));
+			this->icons = (gcnew System::Windows::Forms::ImageList(this->components));
+			this->resultPanel = (gcnew System::Windows::Forms::Panel());
+			this->defeatlabel = (gcnew System::Windows::Forms::Label());
+			this->victoryLabel = (gcnew System::Windows::Forms::Label());
+			this->drawLabel = (gcnew System::Windows::Forms::Label());
 			this->TopPanel->SuspendLayout();
+			this->SidePanel->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ChosenSide))->BeginInit();
 			this->GamePanel->SuspendLayout();
 			this->HeaderPanel->SuspendLayout();
+			this->resultPanel->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// TopPanel
 			// 
+			this->TopPanel->Controls->Add(this->SidePanel);
 			this->TopPanel->Controls->Add(this->StartRestartButton);
-			this->TopPanel->Controls->Add(this->ZeroSideButton);
-			this->TopPanel->Controls->Add(this->CrossSideButton);
-			this->TopPanel->Controls->Add(this->SideInfoLabel);
+			this->TopPanel->Controls->Add(this->ChosenSide);
+			this->TopPanel->Controls->Add(this->label1);
 			this->TopPanel->Location = System::Drawing::Point(13, 46);
 			this->TopPanel->Name = L"TopPanel";
 			this->TopPanel->Size = System::Drawing::Size(312, 53);
 			this->TopPanel->TabIndex = 0;
 			// 
-			// StartRestartButton
+			// SidePanel
 			// 
-			this->StartRestartButton->BackColor = System::Drawing::Color::Gray;
-			this->StartRestartButton->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->StartRestartButton->FlatAppearance->BorderColor = System::Drawing::SystemColors::Control;
-			this->StartRestartButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->StartRestartButton->Font = (gcnew System::Drawing::Font(L"Onyx", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->StartRestartButton->ForeColor = System::Drawing::SystemColors::Control;
-			this->StartRestartButton->Location = System::Drawing::Point(221, 9);
-			this->StartRestartButton->Name = L"StartRestartButton";
-			this->StartRestartButton->Size = System::Drawing::Size(76, 34);
-			this->StartRestartButton->TabIndex = 3;
-			this->StartRestartButton->Text = L"Начать";
-			this->StartRestartButton->UseVisualStyleBackColor = false;
+			this->SidePanel->Controls->Add(this->SideInfoLabel);
+			this->SidePanel->Controls->Add(this->ZeroSideButton);
+			this->SidePanel->Controls->Add(this->CrossSideButton);
+			this->SidePanel->Location = System::Drawing::Point(0, 0);
+			this->SidePanel->Name = L"SidePanel";
+			this->SidePanel->Size = System::Drawing::Size(111, 53);
+			this->SidePanel->TabIndex = 4;
+			// 
+			// SideInfoLabel
+			// 
+			this->SideInfoLabel->AutoSize = true;
+			this->SideInfoLabel->ForeColor = System::Drawing::SystemColors::Control;
+			this->SideInfoLabel->Location = System::Drawing::Point(0, 0);
+			this->SideInfoLabel->Name = L"SideInfoLabel";
+			this->SideInfoLabel->Size = System::Drawing::Size(111, 15);
+			this->SideInfoLabel->TabIndex = 0;
+			this->SideInfoLabel->Text = L"Выберите сторону";
 			// 
 			// ZeroSideButton
 			// 
@@ -173,7 +177,7 @@ namespace Lab1 {
 			this->CrossSideButton->FlatAppearance->MouseOverBackColor = System::Drawing::Color::Transparent;
 			this->CrossSideButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->CrossSideButton->ForeColor = System::Drawing::Color::Transparent;
-			this->CrossSideButton->Location = System::Drawing::Point(17, 18);
+			this->CrossSideButton->Location = System::Drawing::Point(16, 18);
 			this->CrossSideButton->Name = L"CrossSideButton";
 			this->CrossSideButton->Size = System::Drawing::Size(29, 29);
 			this->CrossSideButton->TabIndex = 1;
@@ -181,15 +185,43 @@ namespace Lab1 {
 			this->CrossSideButton->UseVisualStyleBackColor = false;
 			this->CrossSideButton->Click += gcnew System::EventHandler(this, &MyForm::CrossSideButton_Click);
 			// 
-			// SideInfoLabel
+			// StartRestartButton
 			// 
-			this->SideInfoLabel->AutoSize = true;
-			this->SideInfoLabel->ForeColor = System::Drawing::SystemColors::Control;
-			this->SideInfoLabel->Location = System::Drawing::Point(0, 0);
-			this->SideInfoLabel->Name = L"SideInfoLabel";
-			this->SideInfoLabel->Size = System::Drawing::Size(111, 15);
-			this->SideInfoLabel->TabIndex = 0;
-			this->SideInfoLabel->Text = L"Выберите сторону";
+			this->StartRestartButton->BackColor = System::Drawing::Color::Gray;
+			this->StartRestartButton->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->StartRestartButton->FlatAppearance->BorderColor = System::Drawing::SystemColors::Control;
+			this->StartRestartButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->StartRestartButton->Font = (gcnew System::Drawing::Font(L"Onyx", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->StartRestartButton->ForeColor = System::Drawing::SystemColors::Control;
+			this->StartRestartButton->Location = System::Drawing::Point(218, 9);
+			this->StartRestartButton->Name = L"StartRestartButton";
+			this->StartRestartButton->Size = System::Drawing::Size(86, 34);
+			this->StartRestartButton->TabIndex = 3;
+			this->StartRestartButton->Text = L"Начать";
+			this->StartRestartButton->UseVisualStyleBackColor = false;
+			this->StartRestartButton->Click += gcnew System::EventHandler(this, &MyForm::StartRestartButton_Click);
+			// 
+			// ChosenSide
+			// 
+			this->ChosenSide->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"ChosenSide.BackgroundImage")));
+			this->ChosenSide->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+			this->ChosenSide->Location = System::Drawing::Point(28, 16);
+			this->ChosenSide->Name = L"ChosenSide";
+			this->ChosenSide->Size = System::Drawing::Size(34, 34);
+			this->ChosenSide->TabIndex = 6;
+			this->ChosenSide->TabStop = false;
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->BackColor = System::Drawing::SystemColors::WindowFrame;
+			this->label1->ForeColor = System::Drawing::SystemColors::Control;
+			this->label1->Location = System::Drawing::Point(1, 0);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(87, 15);
+			this->label1->TabIndex = 5;
+			this->label1->Text = L"Вы играете за";
 			// 
 			// TopLabel
 			// 
@@ -211,7 +243,6 @@ namespace Lab1 {
 			// 
 			// GamePanel
 			// 
-			this->GamePanel->Controls->Add(this->field9);
 			this->GamePanel->Controls->Add(this->field8);
 			this->GamePanel->Controls->Add(this->field7);
 			this->GamePanel->Controls->Add(this->field6);
@@ -220,27 +251,12 @@ namespace Lab1 {
 			this->GamePanel->Controls->Add(this->field3);
 			this->GamePanel->Controls->Add(this->field2);
 			this->GamePanel->Controls->Add(this->field1);
+			this->GamePanel->Controls->Add(this->field0);
 			this->GamePanel->Enabled = false;
 			this->GamePanel->Location = System::Drawing::Point(13, 115);
 			this->GamePanel->Name = L"GamePanel";
 			this->GamePanel->Size = System::Drawing::Size(312, 314);
 			this->GamePanel->TabIndex = 1;
-			// 
-			// field9
-			// 
-			this->field9->BackColor = System::Drawing::Color::Gray;
-			this->field9->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->field9->FlatAppearance->BorderColor = System::Drawing::SystemColors::Control;
-			this->field9->FlatAppearance->BorderSize = 2;
-			this->field9->FlatAppearance->MouseDownBackColor = System::Drawing::Color::DarkGray;
-			this->field9->FlatAppearance->MouseOverBackColor = System::Drawing::Color::Silver;
-			this->field9->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->field9->Location = System::Drawing::Point(211, 211);
-			this->field9->Name = L"field9";
-			this->field9->Size = System::Drawing::Size(98, 98);
-			this->field9->TabIndex = 8;
-			this->field9->TabStop = false;
-			this->field9->UseVisualStyleBackColor = false;
 			// 
 			// field8
 			// 
@@ -251,12 +267,13 @@ namespace Lab1 {
 			this->field8->FlatAppearance->MouseDownBackColor = System::Drawing::Color::DarkGray;
 			this->field8->FlatAppearance->MouseOverBackColor = System::Drawing::Color::Silver;
 			this->field8->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->field8->Location = System::Drawing::Point(107, 211);
+			this->field8->Location = System::Drawing::Point(211, 211);
 			this->field8->Name = L"field8";
 			this->field8->Size = System::Drawing::Size(98, 98);
-			this->field8->TabIndex = 7;
+			this->field8->TabIndex = 8;
 			this->field8->TabStop = false;
 			this->field8->UseVisualStyleBackColor = false;
+			this->field8->Click += gcnew System::EventHandler(this, &MyForm::field8_Click);
 			// 
 			// field7
 			// 
@@ -267,13 +284,13 @@ namespace Lab1 {
 			this->field7->FlatAppearance->MouseDownBackColor = System::Drawing::Color::DarkGray;
 			this->field7->FlatAppearance->MouseOverBackColor = System::Drawing::Color::Silver;
 			this->field7->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->field7->Location = System::Drawing::Point(3, 211);
+			this->field7->Location = System::Drawing::Point(107, 211);
 			this->field7->Name = L"field7";
-			this->field7->RightToLeft = System::Windows::Forms::RightToLeft::No;
 			this->field7->Size = System::Drawing::Size(98, 98);
-			this->field7->TabIndex = 6;
+			this->field7->TabIndex = 7;
 			this->field7->TabStop = false;
 			this->field7->UseVisualStyleBackColor = false;
+			this->field7->Click += gcnew System::EventHandler(this, &MyForm::field7_Click);
 			// 
 			// field6
 			// 
@@ -284,12 +301,14 @@ namespace Lab1 {
 			this->field6->FlatAppearance->MouseDownBackColor = System::Drawing::Color::DarkGray;
 			this->field6->FlatAppearance->MouseOverBackColor = System::Drawing::Color::Silver;
 			this->field6->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->field6->Location = System::Drawing::Point(211, 107);
+			this->field6->Location = System::Drawing::Point(3, 211);
 			this->field6->Name = L"field6";
+			this->field6->RightToLeft = System::Windows::Forms::RightToLeft::No;
 			this->field6->Size = System::Drawing::Size(98, 98);
-			this->field6->TabIndex = 5;
+			this->field6->TabIndex = 6;
 			this->field6->TabStop = false;
 			this->field6->UseVisualStyleBackColor = false;
+			this->field6->Click += gcnew System::EventHandler(this, &MyForm::field6_Click);
 			// 
 			// field5
 			// 
@@ -300,12 +319,13 @@ namespace Lab1 {
 			this->field5->FlatAppearance->MouseDownBackColor = System::Drawing::Color::DarkGray;
 			this->field5->FlatAppearance->MouseOverBackColor = System::Drawing::Color::Silver;
 			this->field5->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->field5->Location = System::Drawing::Point(107, 107);
+			this->field5->Location = System::Drawing::Point(211, 107);
 			this->field5->Name = L"field5";
 			this->field5->Size = System::Drawing::Size(98, 98);
-			this->field5->TabIndex = 4;
+			this->field5->TabIndex = 5;
 			this->field5->TabStop = false;
 			this->field5->UseVisualStyleBackColor = false;
+			this->field5->Click += gcnew System::EventHandler(this, &MyForm::field5_Click);
 			// 
 			// field4
 			// 
@@ -316,12 +336,13 @@ namespace Lab1 {
 			this->field4->FlatAppearance->MouseDownBackColor = System::Drawing::Color::DarkGray;
 			this->field4->FlatAppearance->MouseOverBackColor = System::Drawing::Color::Silver;
 			this->field4->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->field4->Location = System::Drawing::Point(3, 107);
+			this->field4->Location = System::Drawing::Point(107, 107);
 			this->field4->Name = L"field4";
 			this->field4->Size = System::Drawing::Size(98, 98);
-			this->field4->TabIndex = 3;
+			this->field4->TabIndex = 4;
 			this->field4->TabStop = false;
 			this->field4->UseVisualStyleBackColor = false;
+			this->field4->Click += gcnew System::EventHandler(this, &MyForm::field4_Click);
 			// 
 			// field3
 			// 
@@ -332,12 +353,13 @@ namespace Lab1 {
 			this->field3->FlatAppearance->MouseDownBackColor = System::Drawing::Color::DarkGray;
 			this->field3->FlatAppearance->MouseOverBackColor = System::Drawing::Color::Silver;
 			this->field3->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->field3->Location = System::Drawing::Point(211, 3);
+			this->field3->Location = System::Drawing::Point(3, 107);
 			this->field3->Name = L"field3";
 			this->field3->Size = System::Drawing::Size(98, 98);
-			this->field3->TabIndex = 2;
+			this->field3->TabIndex = 3;
 			this->field3->TabStop = false;
 			this->field3->UseVisualStyleBackColor = false;
+			this->field3->Click += gcnew System::EventHandler(this, &MyForm::field3_Click);
 			// 
 			// field2
 			// 
@@ -348,12 +370,13 @@ namespace Lab1 {
 			this->field2->FlatAppearance->MouseDownBackColor = System::Drawing::Color::DarkGray;
 			this->field2->FlatAppearance->MouseOverBackColor = System::Drawing::Color::Silver;
 			this->field2->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->field2->Location = System::Drawing::Point(107, 3);
+			this->field2->Location = System::Drawing::Point(211, 3);
 			this->field2->Name = L"field2";
 			this->field2->Size = System::Drawing::Size(98, 98);
-			this->field2->TabIndex = 1;
+			this->field2->TabIndex = 2;
 			this->field2->TabStop = false;
 			this->field2->UseVisualStyleBackColor = false;
+			this->field2->Click += gcnew System::EventHandler(this, &MyForm::field2_Click);
 			// 
 			// field1
 			// 
@@ -364,12 +387,30 @@ namespace Lab1 {
 			this->field1->FlatAppearance->MouseDownBackColor = System::Drawing::Color::DarkGray;
 			this->field1->FlatAppearance->MouseOverBackColor = System::Drawing::Color::Silver;
 			this->field1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->field1->Location = System::Drawing::Point(3, 3);
+			this->field1->Location = System::Drawing::Point(107, 3);
 			this->field1->Name = L"field1";
 			this->field1->Size = System::Drawing::Size(98, 98);
-			this->field1->TabIndex = 0;
+			this->field1->TabIndex = 1;
 			this->field1->TabStop = false;
 			this->field1->UseVisualStyleBackColor = false;
+			this->field1->Click += gcnew System::EventHandler(this, &MyForm::field1_Click);
+			// 
+			// field0
+			// 
+			this->field0->BackColor = System::Drawing::Color::Gray;
+			this->field0->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->field0->FlatAppearance->BorderColor = System::Drawing::SystemColors::Control;
+			this->field0->FlatAppearance->BorderSize = 2;
+			this->field0->FlatAppearance->MouseDownBackColor = System::Drawing::Color::DarkGray;
+			this->field0->FlatAppearance->MouseOverBackColor = System::Drawing::Color::Silver;
+			this->field0->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->field0->Location = System::Drawing::Point(3, 3);
+			this->field0->Name = L"field0";
+			this->field0->Size = System::Drawing::Size(98, 98);
+			this->field0->TabIndex = 0;
+			this->field0->TabStop = false;
+			this->field0->UseVisualStyleBackColor = false;
+			this->field0->Click += gcnew System::EventHandler(this, &MyForm::field0_Click);
 			// 
 			// HeaderPanel
 			// 
@@ -411,12 +452,75 @@ namespace Lab1 {
 			this->ExitButton->MouseEnter += gcnew System::EventHandler(this, &MyForm::ExitButton_MouseEnter);
 			this->ExitButton->MouseLeave += gcnew System::EventHandler(this, &MyForm::ExitButton_MouseLeave);
 			// 
+			// sprites
+			// 
+			this->sprites->ImageStream = (cli::safe_cast<System::Windows::Forms::ImageListStreamer^>(resources->GetObject(L"sprites.ImageStream")));
+			this->sprites->TransparentColor = System::Drawing::Color::Empty;
+			this->sprites->Images->SetKeyName(0, L"cross_sprite.png");
+			this->sprites->Images->SetKeyName(1, L"zero_sprite.png");
+			this->sprites->Images->SetKeyName(2, L"empty.png");
+			// 
+			// icons
+			// 
+			this->icons->ImageStream = (cli::safe_cast<System::Windows::Forms::ImageListStreamer^>(resources->GetObject(L"icons.ImageStream")));
+			this->icons->TransparentColor = System::Drawing::Color::Empty;
+			this->icons->Images->SetKeyName(0, L"cross_icon.png");
+			this->icons->Images->SetKeyName(1, L"zero_icon.png");
+			// 
+			// resultPanel
+			// 
+			this->resultPanel->Controls->Add(this->drawLabel);
+			this->resultPanel->Controls->Add(this->defeatlabel);
+			this->resultPanel->Controls->Add(this->victoryLabel);
+			this->resultPanel->Location = System::Drawing::Point(13, 46);
+			this->resultPanel->Name = L"resultPanel";
+			this->resultPanel->Size = System::Drawing::Size(125, 52);
+			this->resultPanel->TabIndex = 3;
+			this->resultPanel->Visible = false;
+			// 
+			// defeatlabel
+			// 
+			this->defeatlabel->AutoSize = true;
+			this->defeatlabel->Font = (gcnew System::Drawing::Font(L"Onyx", 15));
+			this->defeatlabel->ForeColor = System::Drawing::Color::Red;
+			this->defeatlabel->Location = System::Drawing::Point(12, 13);
+			this->defeatlabel->Name = L"defeatlabel";
+			this->defeatlabel->Size = System::Drawing::Size(101, 24);
+			this->defeatlabel->TabIndex = 1;
+			this->defeatlabel->Text = L"Проигрыш!";
+			this->defeatlabel->Visible = false;
+			// 
+			// victoryLabel
+			// 
+			this->victoryLabel->AutoSize = true;
+			this->victoryLabel->Font = (gcnew System::Drawing::Font(L"Onyx", 15));
+			this->victoryLabel->ForeColor = System::Drawing::Color::Chartreuse;
+			this->victoryLabel->Location = System::Drawing::Point(17, 15);
+			this->victoryLabel->Name = L"victoryLabel";
+			this->victoryLabel->Size = System::Drawing::Size(91, 24);
+			this->victoryLabel->TabIndex = 0;
+			this->victoryLabel->Text = L"ПОБЕДА!";
+			this->victoryLabel->Visible = false;
+			// 
+			// drawLabel
+			// 
+			this->drawLabel->AutoSize = true;
+			this->drawLabel->Font = (gcnew System::Drawing::Font(L"Onyx", 15));
+			this->drawLabel->ForeColor = System::Drawing::Color::Yellow;
+			this->drawLabel->Location = System::Drawing::Point(12, 12);
+			this->drawLabel->Name = L"drawLabel";
+			this->drawLabel->Size = System::Drawing::Size(66, 24);
+			this->drawLabel->TabIndex = 2;
+			this->drawLabel->Text = L"Ничья!";
+			this->drawLabel->Visible = false;
+			// 
 			// MyForm
 			// 
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::None;
 			this->BackColor = System::Drawing::SystemColors::WindowFrame;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->ClientSize = System::Drawing::Size(336, 442);
+			this->Controls->Add(this->resultPanel);
 			this->Controls->Add(this->TopPanel);
 			this->Controls->Add(this->HeaderPanel);
 			this->Controls->Add(this->GamePanel);
@@ -433,10 +537,16 @@ namespace Lab1 {
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Крестики-нолики";
 			this->TransparencyKey = System::Drawing::Color::Transparent;
+			this->Shown += gcnew System::EventHandler(this, &MyForm::MyForm_Shown);
 			this->TopPanel->ResumeLayout(false);
 			this->TopPanel->PerformLayout();
+			this->SidePanel->ResumeLayout(false);
+			this->SidePanel->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ChosenSide))->EndInit();
 			this->GamePanel->ResumeLayout(false);
 			this->HeaderPanel->ResumeLayout(false);
+			this->resultPanel->ResumeLayout(false);
+			this->resultPanel->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
@@ -449,5 +559,20 @@ namespace Lab1 {
 		private: System::Void TopLabel_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 		private: System::Void TopLabel_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 		private: System::Void TopLabel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
-};
+		private: System::Void MyForm_Shown(System::Object^ sender, System::EventArgs^ e);
+		private: System::Void StartRestartButton_Click(System::Object^ sender, System::EventArgs^ e);
+		private: System::Void field0_Click(System::Object^ sender, System::EventArgs^ e);
+		private: System::Void field1_Click(System::Object^ sender, System::EventArgs^ e);
+		private: System::Void field2_Click(System::Object^ sender, System::EventArgs^ e);
+		private: System::Void field3_Click(System::Object^ sender, System::EventArgs^ e);
+		private: System::Void field4_Click(System::Object^ sender, System::EventArgs^ e);
+		private: System::Void field5_Click(System::Object^ sender, System::EventArgs^ e);
+		private: System::Void field6_Click(System::Object^ sender, System::EventArgs^ e);
+		private: System::Void field7_Click(System::Object^ sender, System::EventArgs^ e);
+		private: System::Void field8_Click(System::Object^ sender, System::EventArgs^ e);
+		private: System::Void field_Clicked(Button^ sender);
+		private: System::Void field_Clean();
+		private: System::Void ai_Move();
+		private: System::Boolean finish_game();
+	};
 }
