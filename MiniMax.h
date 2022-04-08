@@ -8,10 +8,9 @@ namespace Lab1 {
 		char originBoard[9];
 		char huPlayer;
 		char aiPlayer;
-		int fc = 0;
 		int bestSpot;
 
-		struct DateMove {
+		struct DataMove {
 			int index;
 			long int score;
 		};
@@ -26,8 +25,7 @@ namespace Lab1 {
 			return ScoreMiniMax(originBoard, aiPlayer).index;
 		}
 
-		DateMove Lab1::MiniMax::ScoreMiniMax(char (&newBoard)[9], char player){
-			fc++;
+		DataMove Lab1::MiniMax::ScoreMiniMax(char (&newBoard)[9], char player){
 			bool availSpots[9];
 			int count_availSpots = 0;
 
@@ -43,36 +41,36 @@ namespace Lab1 {
 			}
 
 			if (winning(newBoard, huPlayer)) {
-				DateMove scoreMove;
+				DataMove scoreMove;
 				scoreMove.score = -10;
 				return scoreMove;
 			}
 			else if (winning(newBoard, aiPlayer)) {
-				DateMove scoreMove;
+				DataMove scoreMove;
 				scoreMove.score = 10;
 				return scoreMove;
 			}
 			else if (count_availSpots == 9) {
-				DateMove scoreMove;
+				DataMove scoreMove;
 				scoreMove.score = 0;
 				scoreMove.index = 4;
 				return scoreMove;
 			}
 			
-			std::vector<DateMove> moves;
+			std::vector<DataMove> moves;
 			for (int i = 0; i < 9; i++)
 			{
 				if (availSpots[i]) {
-					DateMove move;
+					DataMove move;
 					move.index = i;
 					newBoard[i] = player;
 					
 					if (player == aiPlayer) {
-						DateMove result = ScoreMiniMax(newBoard, huPlayer);
+						DataMove result = ScoreMiniMax(newBoard, huPlayer);
 						move.score = result.score;
 					}
 					else {
-						DateMove result = ScoreMiniMax(newBoard, aiPlayer);
+						DataMove result = ScoreMiniMax(newBoard, aiPlayer);
 						move.score = result.score;
 					}
 					std::string s = std::to_string(i);
@@ -84,7 +82,7 @@ namespace Lab1 {
 			
 			int bestMove;
 			if (player == aiPlayer) {
-				int bestScore = -10000;
+				int bestScore = -1000;
 				for (int i = 0; i < moves.size(); i++) {
 					if (moves[i].score > bestScore) {
 						bestScore = moves[i].score;
@@ -93,7 +91,7 @@ namespace Lab1 {
 				}
 			}
 			else {
-				int bestScore = 10000;
+				int bestScore = 1000;
 				for (int i = 0; i < moves.size(); i++) {
 					if (moves[i].score < bestScore) {
 						bestScore = moves[i].score;
@@ -102,7 +100,7 @@ namespace Lab1 {
 				}
 			}
 			if (moves.size() == 0) {
-				DateMove indexMove;
+				DataMove indexMove;
 				indexMove.index = 4;
 				return indexMove;
 			} 
